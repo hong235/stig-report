@@ -143,9 +143,10 @@ def processToolCounts(in_cat, tools) :
 				# look for the name in the incoming 'tools' dictionary.  If it does not exist
 				# we simply create it
 				try :
-					tools[t['name']] += 1
+					tools[t['name']]['count'] += 1
 				except :
-					tools[t['name']] = 1
+					tools[t['name']] = { }
+					tools[t['name']]['count'] = 1
 	
 #	print("\n\n", tools, "\n\n")
 	

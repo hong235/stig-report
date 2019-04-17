@@ -163,8 +163,10 @@ def cat2StigCounts(parms) :
 	parent = parms['parent']
 	parent.remove(parms['child'])
 
-	pass 
-	
+	# loop through the entries and write table records
+	for key, item in sorted(parms['summary']['cat2'].items()) :
+		formatCatTableEntry(parent, item)
+
 ## Format CAT III Stig counts into table
 #
 #
@@ -172,8 +174,10 @@ def cat3StigCounts(parms) :
 	parent = parms['parent']
 	parent.remove(parms['child'])
 
-	pass
-	
+	# loop through the entries and write table records
+	for key, item in sorted(parms['summary']['cat3'].items()) :
+		formatCatTableEntry(parent, item)
+
 ####################
 # CAT I/II/III Stig Counts End
 ####################
