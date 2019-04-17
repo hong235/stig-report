@@ -283,11 +283,11 @@ def main(args) :
 	# decided to do it the easy way.
 	summary_data, stig_counts = es.CollectExecutiveSummary(ini, cdx, project_id)
 	
-	# now that we have the data, form up the graphics
-	es.FormatExecutiveGraphic(summary_data, ini.get('Report', 'graphic_filename'))
-	
 	# perform the queries to generate additional data for findings, and tools
 	report_counts = FindingsAndTools.get(ini, cdx, project_id)
+	
+	# now that we have the data, form up the graphics
+	es.FormatExecutiveGraphic(summary_data, ini.get('Report', 'graphic_filename'))
 	
 	# This is a call table used to collect the CodeDx elements "content" attribute into.
 	# When the attribute is determined, a subroutine is called to create the appropriate
