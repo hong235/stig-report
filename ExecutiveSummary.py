@@ -61,13 +61,13 @@ def CollectExecutiveSummary(ini, cdx, project_id) :
 ## Format the Executive Summary Graphic
 #
 #
-def FormatExecutiveGraphic(stig_counts, graphic_filename) :
+def FormatExecutiveGraphic(summary, graphic_filename) :
 	
 	# create the data sets we need
 	objects = ( 'CAT I', 'CAT II', 'CAT III' )
 	colors = ( 'red', 'orange', 'yellow' )
 	y_pos = [ 0, 1, 2 ]
-	values = [ stig_counts['CAT I'], stig_counts['CAT II'], stig_counts['CAT III'] ]
+	values = [ summary['cat1Totals'], summary['cat2Totals'], summary['cat3Totals'] ]
 
 	# form the output plot, and ship it to the correct file
 	plt.bar(y_pos, values, align='center', alpha=1.0, color=colors)

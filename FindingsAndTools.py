@@ -182,7 +182,6 @@ def get(ini, cdx, project_id) :
 	#                                                 'tools'    : [ ] List of dictionary of tool 'name', 'metadata'
 	#                                              }
 	#                                           ]
-	#                           'totals'      : total count of all of the findings
 	#                        }
 	#            }
 	#   'cat1Totals' : total finding counts.  May contain duplicates.
@@ -265,3 +264,9 @@ def get(ini, cdx, project_id) :
 	retval['tools'] = { }
 	for name in [ 'cat1', 'cat2', 'cat3' ] :
 		processToolCounts(retval[name], retval['tools'])
+
+	# return the data we have collected
+	return retval
+	
+	
+	

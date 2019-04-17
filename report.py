@@ -22,7 +22,7 @@ def tocDisaStigVersion(parms) :
 	elem.attrib['text-align'] = "start"
 	elem.attrib['text-align-last'] = "justify"
 	elem.attrib['font-size'] = "11pt"
-	elem.text = "Finding Counts by ASD STIG Version " + parms['summary']['version']
+	elem.text = "Finding Counts by ASD STIG Version " + parms['summary']['stig']['version']
 	
 	# add the dots after the element
 	leader = ET.SubElement(elem, 'fo:leader')
@@ -62,7 +62,7 @@ def disaStigVersion(parms) :
 	
 	# format the output
 	elem = ET.SubElement(parent, 'fo:block')
-	elem.text = "DISA ASD STIG Version " + parms['summary']['version']
+	elem.text = "DISA ASD STIG Version " + parms['summary']['stig']['version']
 
 ## Rewrite CAT finding counts in table
 #
@@ -74,13 +74,13 @@ def catCells(parms) :
 	# format the cells for the counts in the Executive Summary table
 	cell = ET.SubElement(parent, 'fo:table-cell', { 'border-width': 'thin', 'border-style': 'solid' })
 	cellb = ET.SubElement(cell, 'fo:block')
-	cellb.text = str(parms['summary']['CAT I'])
+	cellb.text = str(parms['summary']['cat1Totals'])
 	cell = ET.SubElement(parent, 'fo:table-cell', { 'border-width': 'thin', 'border-style': 'solid' })
 	cellb = ET.SubElement(cell, 'fo:block')
-	cellb.text = str(parms['summary']['CAT II'])
+	cellb.text = str(parms['summary']['cat2Totals'])
 	cell = ET.SubElement(parent, 'fo:table-cell', { 'border-width': 'thin', 'border-style': 'solid' })
 	cellb = ET.SubElement(cell, 'fo:block')
-	cellb.text = str(parms['summary']['CAT III'])
+	cellb.text = str(parms['summary']['cat3Totals'])
 
 ## findingCountsByStig
 #
@@ -102,7 +102,7 @@ def findingCountsByStig(parms) :
 	block.attrib['padding-top'] = "3pt"
 	block.attrib['break-before'] = "page"
 	
-	block.text = "Finding Counts by ASD STIG Version " + parms['summary']['version']
+	block.text = "Finding Counts by ASD STIG Version " + parms['summary']['stig']['version']
 
 ####################
 # CAT I/II/III Stig Counts
@@ -116,15 +116,15 @@ def formatCatTableEntry(xml, stig) :
 	row = ET.SubElement(xml, "fo:table-row")
 	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
 	block = ET.SubElement(cell, "fo:block")
-	block.text = stig['id']
+	block.text = stig['name']
 	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
 	block = ET.SubElement(cell, "fo:block")
-	block.text = stig['desc']
+	block.text = stig['description']
 	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
 	block = ET.SubElement(cell, "fo:block")
-	block.text = stig['count']
+	block.text = str(len(stig['findings']))
 	
-	if stig['count'] > '0' :
+	if len(stig['findings']) > 0 :
 		cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid', 'font-family' : 'Courier', 'color' : 'red' })
 		block = ET.SubElement(cell, "fo:block")
 		block.text = 'FAIL'
@@ -151,33 +151,10 @@ def makeEntry(xml, description, count) :
 def cat1StigCounts(parms) :
 	parent = parms['parent']
 	parent.remove(parms['child'])
-
-	# grab each of the STIGs and counts from the data.  We check through the
-	# children until we find the STIG CAT we are looking for
-	stigs = {}
-	if len(parms['stig_data'][0]['children']) < 1 :
-		return
-	for cat in parms['stig_data'][0]['children'][0]['children'] :
-		stack = []
-		stack.extend(cat['children'] )
-		while True :
-			try :
-				node = stack.pop()	# get a node off the end of the list
-			except :
-				break
-			
-			if 'children' in node.keys() :
-				stack.extend(node['children'])
-			else :
-				# no children.  Capture his information
-				entry = makeEntry(parent, node['name'], node['count'])
-				if entry['id'] not in stigs :
-					stigs[entry['id']] = entry
 					
 	# loop through the entries and write table records
-	for key in sorted(stigs.keys()) :
-		item = stigs[key]
-		formatCatTableEntry(item['parent'], item)
+	for key, item in sorted(parms['summary']['cat1'].items()) :
+		formatCatTableEntry(parent, item)
 
 ## Format CAT II Stig counts into table
 #
@@ -186,34 +163,8 @@ def cat2StigCounts(parms) :
 	parent = parms['parent']
 	parent.remove(parms['child'])
 
-	# grab each of the STIGs and counts from the data.  We check through the
-	# children until we find the STIG CAT we are looking for
-	stigs = {}
-	if len(parms['stig_data'][0]['children']) < 2 :
-		return
-	for cat in parms['stig_data'][0]['children'][1]['children'] :
-		
-		stack = []
-		stack.extend(cat['children'] )
-		while True :
-			try :
-				node = stack.pop()	# get a node off the end of the list
-			except :
-				break
-			
-			if 'children' in node.keys() :
-				stack.extend(node['children'])
-			else :
-				# no children.  Capture his information
-				entry = makeEntry(parent, node['name'], node['count'])
-				if entry['id'] not in stigs :
-					stigs[entry['id']] = entry
-					
-	# loop through the entries and write table records
-	for key in sorted(stigs.keys()) :
-		item = stigs[key]
-		formatCatTableEntry(item['parent'], item)
-
+	pass 
+	
 ## Format CAT III Stig counts into table
 #
 #
@@ -221,36 +172,7 @@ def cat3StigCounts(parms) :
 	parent = parms['parent']
 	parent.remove(parms['child'])
 
-	# grab each of the STIGs and counts from the data.  We check through the
-	# children until we find the STIG CAT we are looking for
-	stigs = {}
-	if len(parms['stig_data'][0]['children']) < 3 :
-		entry = makeEntry(parent, '- -', 0)
-		formatCatTableEntry(parent, entry)
-		return
-	for cat in parms['stig_data'][0]['children'][2]['children'] :
-		
-		stack = []
-		stack.extend(cat['children'] )
-		while True :
-			try :
-				node = stack.pop()	# get a node off the end of the list
-			except :
-				break
-			
-			if 'children' in node.keys() :
-				stack.extend(node['children'])
-			else :
-				# no children.  Capture his information
-				entry = makeEntry(parent, node['name'], node['count'])
-				if entry['id'] not in stigs :
-					stigs[entry['id']] = entry
-					
-	# loop through the entries and write table records
-	for key in sorted(stigs.keys()) :
-		item = stigs[key]
-		formatCatTableEntry(item['parent'], item)
-
+	pass
 	
 ####################
 # CAT I/II/III Stig Counts End
@@ -284,7 +206,7 @@ def main(args) :
 	#summary_data, stig_counts = es.CollectExecutiveSummary(ini, cdx, project_id)
 	
 	# perform the queries to generate additional data for findings, and tools
-	report_counts = FindingsAndTools.get(ini, cdx, project_id)
+	summary_data = FindingsAndTools.get(ini, cdx, project_id)
 	
 	# now that we have the data, form up the graphics
 	es.FormatExecutiveGraphic(summary_data, ini.get('Report', 'graphic_filename'))
@@ -325,7 +247,6 @@ def main(args) :
 	# contains elements that are required.
 	call_dict = { 'project'   : project_name,
 				  'summary'   : summary_data,
-				  'stig_data' : stig_counts,
 				  'cdx'       : cdx,
 				  'proj_id'   : project_id
 				}
