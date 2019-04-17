@@ -281,7 +281,7 @@ def main(args) :
 	#
 	# Note that the data is duplicated for each of the STIG levels.  This is so small, I
 	# decided to do it the easy way.
-	summary_data, stig_counts = es.CollectExecutiveSummary(ini, cdx, project_id)
+	#summary_data, stig_counts = es.CollectExecutiveSummary(ini, cdx, project_id)
 	
 	# perform the queries to generate additional data for findings, and tools
 	report_counts = FindingsAndTools.get(ini, cdx, project_id)
