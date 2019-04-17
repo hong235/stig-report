@@ -181,6 +181,83 @@ def cat3StigCounts(parms) :
 ####################
 # CAT I/II/III Stig Counts End
 ####################
+
+## Tool Findings
+#
+#
+def toolFindings(parms) :
+	parent = parms['parent']
+	parent.remove(parms['child'])
+	
+	# loop through the tools and set the findings.  Ignore the description for now
+	for key, item in parms['summary']['tools'].items() :
+		tr = ET.SubElement(parent, 'fo:table-row')
+		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'left' })
+		bl = ET.SubElement(tc, 'fo:block')
+		bl.text = str(item['count'])
+		
+		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'left' })
+		bl = ET.SubElement(tc, 'fo:block')
+		bl.text = key
+
+## Tool Total Findings
+#
+#
+def toolTotalFindings(parms) :
+	parent = parms['parent']
+	parent.remove(parms['child'])
+	
+	blk = ET.SubElement(parent, 'fo:block')
+	blk.text = str(parms['summary']['toolsFindings'])
+
+## Table of Contents Details
+#
+# 
+def tocDetails(parms) :
+	parent = parms['parent']
+	parent.remove(parms['child'])
+	
+	# CAT I keys
+	for key, item in parms['summary']['cat1'].items() :
+		tr = ET.SubElement(parent, 'fo:table-row')
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'start', 'font-size' : '9pt', 'text-align-last' : 'justify', 'margin-left' : '05%' })
+		bl.text = key
+		ET.SubElement(bl, 'fo:leader', { 'leader-pattern' : 'dots', 'leader-alignment' : 'reference-area' })
+		
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'end' })
+		
+		link = ET.SubElement(bl, 'fo:basic-link', { 'internal-destination' : key })
+		ET.SubElement(link, 'fo:page-number-citation', { 'ref-id' : key })
+	
+	# CAT II keys
+	for key, item in parms['summary']['cat2'].items() :
+		tr = ET.SubElement(parent, 'fo:table-row')
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'start', 'font-size' : '9pt', 'text-align-last' : 'justify', 'margin-left' : '05%' })
+		bl.text = key
+		ET.SubElement(bl, 'fo:leader', { 'leader-pattern' : 'dots', 'leader-alignment' : 'reference-area' })
+		
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'end' })
+		
+		link = ET.SubElement(bl, 'fo:basic-link', { 'internal-destination' : key })
+		ET.SubElement(link, 'fo:page-number-citation', { 'ref-id' : key })
+	
+	# CAT III keys
+	for key, item in parms['summary']['cat3'].items() :
+		tr = ET.SubElement(parent, 'fo:table-row')
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'start', 'font-size' : '9pt', 'text-align-last' : 'justify', 'margin-left' : '05%' })
+		bl.text = key
+		ET.SubElement(bl, 'fo:leader', { 'leader-pattern' : 'dots', 'leader-alignment' : 'reference-area' })
+		
+		tc = ET.SubElement(tr, 'fo:table-cell')
+		bl = ET.SubElement(tc, 'fo:block', { 'text-align' : 'end' })
+		
+		link = ET.SubElement(bl, 'fo:basic-link', { 'internal-destination' : key })
+		ET.SubElement(link, 'fo:page-number-citation', { 'ref-id' : key })
 	
 ## Main Entry Point
 #
@@ -227,7 +304,10 @@ def main(args) :
 					   'CatIStigCounts'      : cat1StigCounts,
 					   'CatIIStigCounts'     : cat2StigCounts,
 					   'CatIIIStigCounts'    : cat3StigCounts,
-					   'languages'           : rl.languageCells
+					   'languages'           : rl.languageCells,
+					   'ToolFindings'        : toolFindings,
+					   'ToolTotalFindings'   : toolTotalFindings,
+					   'ToCDetails'          : tocDetails
 					 }
 	
 	# load our XML template into memory for modification

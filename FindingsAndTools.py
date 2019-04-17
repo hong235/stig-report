@@ -135,6 +135,7 @@ def processToolCounts(in_cat, tools) :
 
 	# loop through all of the names from the in_cat structure and create counters for tools
 	# that exist
+	total_findings = 0
 	for key, cat in in_cat.items() :
 		# look into the 'findings' field to grab the tool names
 		for finding in cat['findings'] :
@@ -144,12 +145,13 @@ def processToolCounts(in_cat, tools) :
 				# we simply create it
 				try :
 					tools[t['name']]['count'] += 1
+					total_findings += 1
 				except :
 					tools[t['name']] = { }
 					tools[t['name']]['count'] = 1
+					total_findings += 1
 	
-#	print("\n\n", tools, "\n\n")
-	
+	return total_findings
 	
 ## Main Entry Point 'get'
 #
@@ -201,6 +203,7 @@ def get(ini, cdx, project_id) :
 	#                'name' : {				: name of the tool is the key to this field
 	#                            'count'	: number of findings calculated for this tool
 	#             }
+	#   'toolsFindings' : total of all of the tool findings
 	# }
 	#
 	retval = { 'stig' : {} }
@@ -263,8 +266,11 @@ def get(ini, cdx, project_id) :
 	# cats in the data structure, and count into the 'tools' section.  This will tell us the
 	# numbers.  A record for a tool is only created when the tool name is encountered.
 	retval['tools'] = { }
+	total_findings = 0
 	for name in [ 'cat1', 'cat2', 'cat3' ] :
-		processToolCounts(retval[name], retval['tools'])
+		total_findings += processToolCounts(retval[name], retval['tools'])
+	
+	retval['toolsFindings'] = total_findings
 
 	# return the data we have collected
 	return retval
