@@ -7,6 +7,8 @@ import codedx
 import ExecutiveSummary as es
 import ReportLanguage as rl
 import FindingsAndTools
+import FindingDetails as fd
+import ToolUtilities
 import xml.etree.ElementTree as ET
 import datetime
 import re
@@ -117,7 +119,7 @@ def formatCatTableEntry(xml, stig) :
 	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
 	block = ET.SubElement(cell, "fo:block")
 	block.text = stig['name']
-	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
+	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid', 'text-align' : 'left', 'padding-left' : '5pt' })
 	block = ET.SubElement(cell, "fo:block")
 	block.text = stig['description']
 	cell = ET.SubElement(row, "fo:table-cell", { 'border-width' : 'thin', 'border-style' : 'solid' })
@@ -192,13 +194,17 @@ def toolFindings(parms) :
 	# loop through the tools and set the findings.  Ignore the description for now
 	for key, item in parms['summary']['tools'].items() :
 		tr = ET.SubElement(parent, 'fo:table-row')
-		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'left' })
+		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'center' })
 		bl = ET.SubElement(tc, 'fo:block')
 		bl.text = str(item['count'])
 		
-		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'left' })
+		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'center' })
 		bl = ET.SubElement(tc, 'fo:block')
 		bl.text = key
+
+		tc = ET.SubElement(tr, 'fo:table-cell', { 'border-style' : 'solid', 'text-align' : 'left', 'padding-left' : '5pt' })
+		bl = ET.SubElement(tc, 'fo:block')
+		bl.text = ToolUtilities.getDescription(key)
 
 ## Tool Total Findings
 #
@@ -307,7 +313,8 @@ def main(args) :
 					   'languages'           : rl.languageCells,
 					   'ToolFindings'        : toolFindings,
 					   'ToolTotalFindings'   : toolTotalFindings,
-					   'ToCDetails'          : tocDetails
+					   'ToCDetails'          : tocDetails,
+					   'FormatFindingDetail' : fd.details
 					 }
 	
 	# load our XML template into memory for modification

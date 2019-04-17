@@ -7,12 +7,16 @@ import xml.etree.ElementTree as ET
 #
 # Capture the languages and metrics around them
 #
-def languageCells(call_dict) :
+def languageCells(parms) :
+	# begin operation by eliminating the 'CodeDx' tag from the XML
+	parent = parms['parent']
+	parent.remove(parms['child'])
+	
 	# call Code Dx to get our metrics list
-	metrics = call_dict['cdx'].getCodeMetrics(call_dict['proj_id'])
+	metrics = parms['cdx'].getCodeMetrics(parms['proj_id'])
 	
 	# get the parent XML item for this operation.
-	parent = call_dict['parent']
+	parent = parms['parent']
 	
 	# loop through the incoming metrics and create a series of dictionaries
 	# with the data we want to present
@@ -32,4 +36,5 @@ def languageCells(call_dict) :
 		num_files.text = str(value['numSourceFiles'])
 		cell = ET.SubElement(row, 'fo:table-cell', { 'border-width' : 'thin', 'border-style' : 'solid' })
 		findings = ET.SubElement(cell, 'fo:block')
-		findings.text = str(value['numFindings'])
+#		findings.text = str(value['numFindings'])
+		findings.text = 'TBD'
