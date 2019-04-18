@@ -349,7 +349,7 @@
 	  </fo:list-block>
 
 	  <fo:block margin-left="12.5%">
-		  <fo:external-graphic content-width="75%" content-height="75%" src="graphics2/DisaStigChart.png"/>
+		  <fo:external-graphic content-width="75%" content-height="75%" src="graphics/DisaStigChart.png"/>
 	  </fo:block>	  
 
 	  <fo:table text-align="center" table-layout="fixed" width="100%" border-collapse="collapse">
