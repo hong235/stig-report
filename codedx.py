@@ -77,6 +77,10 @@ class CodeDx :
 		
 		# create a project dictionary to contain the Code Dx project ID.
 		self.getProjectIds()
+		
+		# set up a storage location for getFileLines - trying to make this a little faster
+		self.getFileStorage   = ''
+		self.getFileStorageId = -1
 	
 	## getProjectIds
 	#
@@ -260,6 +264,50 @@ class CodeDx :
 		
 		# return the successful list of data
 		return resp.json()
+	
+	## getFileLines
+	#
+	# Collect the file information given the project ID, and file ID
+	#
+	# use this as an impromptu cache: self.getFileStorage
+	#								  self.getFileStorageId
+	#
+	def getFileLines(self, project_id, location, count) :
+		
+		try :
+			# format the url for this endpoint
+			url = self.url + '/projects/' + str(project_id) + '/files/' + str(location['fileid'])
+		except :
+			return ' '
+
+		# check to see if we already have this file in place.
+		if self.getFileStorageId != location['fileid'] :
+			resp = self.session.get(url)
+			if resp.status_code != 200 :
+				# print("|-- [CDX getFileLines] responded [" + str(resp.status_code) + "] for file ID [" + str(location['fileid']) + "]")
+				return resp.text
+			
+			# file has been accessed.  Store it in the cache
+			self.getFileStorage = resp.text.split('\n')
+			self.getFileStorageId = location['fileid']
+		
+		# we have the file lines.  Trim them to the lines we need.
+		loc = int(location['line'])
+		count = int(count)
+		lines = self.getFileStorage[loc - count : loc + count]
+		
+		# reformat lines to eliminate the array
+		retval = ''
+		for line in lines :
+			retval += line
+		
+		return retval
+		
+		
+	
+	
+	
+	
 	
 		
 		

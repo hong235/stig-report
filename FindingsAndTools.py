@@ -95,9 +95,9 @@ def processFindings(in_cat, cdx, project_id) :
 			list['id']    = finding['id']
 			list['error'] = finding['descriptor']['name']
 			try :
-				list['location'] = { 'path' : finding['location']['path']['path'],
-									 'file' : finding['location']['path']['shortName'],
-									 'line' : finding['location']['lines']['start']
+				list['location'] = { 'path'   : finding['location']['path']['path'],
+									 'fileid' : finding['location']['path']['id'],
+									 'line'   : finding['location']['lines']['start']
 								   }
 			except :
 				list['location'] = { 'path' : '', 'file' : '', 'line' : '' }
@@ -152,11 +152,37 @@ def processToolCounts(in_cat, tools) :
 					total_findings += 1
 	
 	return total_findings
+
+## Collect Code Snippets
+#
+# Loop through all of the different findings, and put in the code snippet.  We do this
+# the easy way that probably consumes the most CPU cycles
+def collectCodeSnippets(in_cat, cdx, project_id, code_linecount) :
+
+	# here we go... start by accessing a loop around the finding STIGs
+	for key, cat in in_cat.items() :
+	
+		# loop into each of the STIGs findings
+		for finding in cat['findings'] :
+		
+			# We have a finding.  Using the 'location' we collect what we need from the call
+			tmpstr = cdx.getFileLines(project_id, finding['location'], int(code_linecount))
+			
+			# convert each of the 5 items that could be in code to a value that can be stored
+			# in an XML file
+			#tmpstr = tmpstr.replace('&', '&amp;')
+			tmpstr = tmpstr.replace('<', '&lt;')
+			tmpstr = tmpstr.replace('>', '&gt;')
+			# tmpstr = tmpstr.replace('"', '&quot;')
+			#tmpstr = tmpstr.replace("'", '&apos;')
+			finding['code'] = tmpstr
+
+
 	
 ## Main Entry Point 'get'
 #
 #	
-def get(ini, cdx, project_id) :
+def get(ini, cdx, project_id, code_linecount) :
 	
 	# this will get complicated.  Hence a new file in the list!
 	# Here is the new data structure we will be using to return
@@ -177,12 +203,13 @@ def get(ini, cdx, project_id) :
 	#                                              {
 	#                                                 'id'       : Code Dx ID of the finding
 	#                                                 'location' : {
-	#                                                                 'path' : path to the file
-	#                                                                 'file' : filename of the location
-	#                                                                 'line' : line number of the location
+	#                                                                 'path'   : path to the file
+	#                                                                 'fileid' : filename of the location
+	#                                                                 'line'   : line number of the location
 	#                                                              }
 	#                                                 'error'    : Name of the rule violated
 	#                                                 'tools'    : [ ] List of dictionary of tool 'name', 'metadata'
+	#                                                 'code'     : continuous string of the code.
 	#                                              }
 	#                                           ]
 	#                        }
@@ -269,6 +296,11 @@ def get(ini, cdx, project_id) :
 	total_findings = 0
 	for name in [ 'cat1', 'cat2', 'cat3' ] :
 		total_findings += processToolCounts(retval[name], retval['tools'])
+		print("|- [FindingsAndTools.get] -- Processing tool counts")
+	
+	# loop through the entire structure and ingest the lines for the requested code lines
+	for name in [ 'cat1', 'cat2', 'cat3' ] :
+		collectCodeSnippets(retval[name], cdx, project_id, code_linecount)
 	
 	retval['toolsFindings'] = total_findings
 

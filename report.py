@@ -293,7 +293,7 @@ def main(args) :
 	#summary_data, stig_counts = es.CollectExecutiveSummary(ini, cdx, project_id)
 	
 	# perform the queries to generate additional data for findings, and tools
-	summary_data = FindingsAndTools.get(ini, cdx, project_id)
+	summary_data = FindingsAndTools.get(ini, cdx, project_id, ini.get('Report', 'code_detail'))
 	
 	# now that we have the data, form up the graphics
 	es.FormatExecutiveGraphic(summary_data, ini.get('Report', 'graphic_filename'))
