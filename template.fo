@@ -751,7 +751,7 @@ public static &lt;Test&gt;ExecResults execOptions(String[] command, String input
 		  	  
 	  <fo:block id="fortify-logo" break-before="page" padding-top="0.5cm" >
 	    <fo:basic-link external-destination="https://www.microfocus.com/en-us/products/static-code-analysis-sast/overview">
-		  <fo:external-graphic content-width="30%" content-height="30%" src="graphics/microfocus.svg"/>
+		  <fo:external-graphic content-width="30%" content-height="30%" src="graphics/fortify.png"/>
 		</fo:basic-link>
 	  </fo:block>	  
 	  
