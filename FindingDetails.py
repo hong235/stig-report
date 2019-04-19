@@ -94,7 +94,25 @@ def processTableData(parent, find) :
 				  'space-after' : '15pt' }
 	ET.SubElement(tc, 'fo:block', code_attr).text = find['code']
 	
+	# per Mai's request... Status Block
+	tr = ET.SubElement(tb, 'fo:table-row', { 'background-color' : 'LightSkyBlue' })
+	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
+	ET.SubElement(tc, 'fo:block').text = 'Status'
 	
+	tr = ET.SubElement(tb, 'fo:table-row')
+	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
+	ET.SubElement(tc, 'fo:block', { 'text-align' : 'left', 'padding-top' : '36pt' }).text = ' '
+	
+	# per Mai's request... Comments Block	
+	tr = ET.SubElement(tb, 'fo:table-row', { 'background-color' : 'LightSkyBlue' })
+	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
+	ET.SubElement(tc, 'fo:block').text = 'Comments'
+	
+	tr = ET.SubElement(tb, 'fo:table-row')
+	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
+	ET.SubElement(tc, 'fo:block', { 'text-align' : 'left', 'padding-top' : '72pt' }).text = ' '
+	
+
 	
 ## Process each STIG item
 #

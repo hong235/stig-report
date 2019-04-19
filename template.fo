@@ -64,15 +64,20 @@
   <fo:page-sequence master-reference="Title">	
 	<fo:flow flow-name="xsl-region-body">
 	  
-	  <fo:block color="white" text-align="center" font-size="36" background-color="#00BFFF" border-width="5mm" border-color="white" border-style="double" margin-left="1in" margin-right="1in" margin-top="3in" padding-top="0.5in" padding-bottom="0.5in" >
+<!--	  <fo:block color="black" text-align="center" font-size="36" background-color="#00BFFF" border-width="5mm" border-color="black" border-style="double" margin-left="1in" margin-right="1in" margin-top="3in" padding-top="0.5in" padding-bottom="0.5in" >
+-->
+	  <fo:block color="black" text-align="center" font-size="36" background-color="white" border-width="5mm" border-color="black" border-style="double" margin-left="1in" margin-right="1in" margin-top="3in" padding-top="0.5in" padding-bottom="0.5in" >
 	    <fo:block font-size="36" >
-		  This is the Title
+		  Assessment Report
         </fo:block>
 		<fo:block font-size="18" >
-		  14-April-2019
+		  Mai's Project
 		</fo:block>
 		<fo:block font-size="18" >
-		  Someone Responsible
+		  19-April-2019
+		</fo:block>
+		<fo:block font-size="14" >
+		  Vincent M. Hopson -- Code Dx
 		</fo:block>
 	  </fo:block>
 	  
@@ -734,6 +739,7 @@ public static &lt;Test&gt;ExecResults execOptions(String[] command, String input
 		<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="2pt"/>
 	  </fo:block>
 
+	  <!--
 	  <fo:block id="checkmarx-logo">
 	    <fo:basic-link external-destination="https://www.checkmarx.com">
 		  <fo:external-graphic content-width="40%" content-height="40%" src="graphics/checkmarxlogo.jpg"/>
@@ -747,9 +753,9 @@ public static &lt;Test&gt;ExecResults execOptions(String[] command, String input
 	  <fo:block font-size="10pt" font-family="sans-serif" space-after.optimum="15pt" text-align="left" padding-top="3pt">
 		Checkmarx CxSAST is a unique source code analysis solution that provides tools for identifying, tracking, and repairing technical and logical flaws in the source code, such as security vulnerabilities, compliance issues, and business logic problems.
 		<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="2pt"/>
-	  </fo:block>
+	  </fo:block> -->
 		  	  
-	  <fo:block id="fortify-logo" break-before="page" padding-top="0.5cm" >
+	  <fo:block id="fortify-logo" padding-top="0.5cm" >
 	    <fo:basic-link external-destination="https://www.microfocus.com/en-us/products/static-code-analysis-sast/overview">
 		  <fo:external-graphic content-width="30%" content-height="30%" src="graphics/fortify.png"/>
 		</fo:basic-link>

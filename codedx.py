@@ -91,7 +91,7 @@ class CodeDx :
 	
 		# format the URL for the location we wish to accress
 		url = self.url + '/projects'
-		resp = self.session.get(url)
+		resp = self.session.get(url, verify = False)
 		if resp.status_code != 200 :
 			print("|-- [CDX getProjectIds] get projects responded [%d]" % resp.status_code)
 			return {}
