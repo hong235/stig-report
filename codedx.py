@@ -299,7 +299,7 @@ class CodeDx :
 		# reformat lines to eliminate the array
 		retval = ''
 		for line in lines :
-			retval += line
+			retval += line.rstrip() + '\n'
 		
 		return retval
 		

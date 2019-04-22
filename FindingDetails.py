@@ -70,7 +70,6 @@ def processTableData(parent, find) :
 		ET.SubElement(tc, 'fo:block').text = str(md_key) + " : " + str(md_val)
 		
 	# Begin the table for the example code
-	block_attr['space-after'] = '15pt'
 	ta = ET.SubElement(parent, 'fo:table', block_attr)
 	ET.SubElement(ta, 'fo:table-column', { 'column-width' : '100%' })
 	tb = ET.SubElement(ta, 'fo:table-body')
@@ -94,23 +93,25 @@ def processTableData(parent, find) :
 				  'space-after' : '15pt' }
 	ET.SubElement(tc, 'fo:block', code_attr).text = find['code']
 	
-	# per Mai's request... Status Block
+	# per Mai's request... Status Block and Comments
+	block_attr['space-after'] = '15pt'
+	ta = ET.SubElement(parent, 'fo:table', block_attr)
+	ET.SubElement(ta, 'fo:table-column', { 'column-width' : '50%' })
+	ET.SubElement(ta, 'fo:table-column', { 'column-width' : '50%' })
+	tb = ET.SubElement(ta, 'fo:table-body')
+	
+	# add the header
 	tr = ET.SubElement(tb, 'fo:table-row', { 'background-color' : 'LightSkyBlue' })
 	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
-	ET.SubElement(tc, 'fo:block').text = 'Status'
-	
+	ET.SubElement(tc, 'fo:block').text = 'Status'	
+	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
+	ET.SubElement(tc, 'fo:block').text = 'Comment'
+
 	tr = ET.SubElement(tb, 'fo:table-row')
 	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
 	ET.SubElement(tc, 'fo:block', { 'text-align' : 'left', 'padding-top' : '36pt' }).text = ' '
-	
-	# per Mai's request... Comments Block	
-	tr = ET.SubElement(tb, 'fo:table-row', { 'background-color' : 'LightSkyBlue' })
 	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
-	ET.SubElement(tc, 'fo:block').text = 'Comments'
-	
-	tr = ET.SubElement(tb, 'fo:table-row')
-	tc = ET.SubElement(tr, 'fo:table-cell', cell_attr)
-	ET.SubElement(tc, 'fo:block', { 'text-align' : 'left', 'padding-top' : '72pt' }).text = ' '
+	ET.SubElement(tc, 'fo:block', { 'text-align' : 'left', 'padding-top' : '36pt' }).text = ' '
 	
 
 	

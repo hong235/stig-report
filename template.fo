@@ -68,16 +68,13 @@
 -->
 	  <fo:block color="black" text-align="center" font-size="36" background-color="white" border-width="5mm" border-color="black" border-style="double" margin-left="1in" margin-right="1in" margin-top="3in" padding-top="0.5in" padding-bottom="0.5in" >
 	    <fo:block font-size="36" >
-		  Assessment Report
+		  ASD STIG Report
         </fo:block>
 		<fo:block font-size="18" >
 		  Mai's Project
 		</fo:block>
 		<fo:block font-size="18" >
-		  19-April-2019
-		</fo:block>
-		<fo:block font-size="14" >
-		  Vincent M. Hopson -- Code Dx
+		  Scan Date: 19-April-2019
 		</fo:block>
 	  </fo:block>
 	  
