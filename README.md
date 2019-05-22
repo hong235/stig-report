@@ -69,16 +69,15 @@ Here is the generic layout of the directories.  The only environment requirement
 the Apache FOP binary (dependent on the operating system you are using) should be in your
 path, as well as Java 1.8+.
 
-A successful file layout is:
-```
-<report_directory>/
-       |----- report/
-	            |-- Python files for report generation
-	   |----- example/
-	            |----- graphics/
-				|----- report.fo (after running program from 'report' directory
-				|----- report.pdf (after running 'fo' from this directory
-```
+The anticipated layout is:
+
+![alt text](./graphics_storage/directory_layout.png "Directory Layout")
+
+All of the Python files and directories in the Git checkout are in one directory, and the
+target directory *must* be named ''example'' or the directory specified in your `report.ini`
+file under `fo_output` and `graphic_filename`.  All of the graphics inside of the
+`graphics_storage` directory in your Git checkout should also be copied to that directory's
+`graphics` directory.
 
 ## Usage
 Extracting gathering the code from the Git repository will create the Python files
