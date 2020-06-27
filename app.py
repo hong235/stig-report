@@ -1,6 +1,5 @@
 import os, sys
 import subprocess
 
-#cmd = ['report.py --config report.ini']
-#subprocess.Popen([sys.executable, cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-os.system('python report.py --config report.ini')
+#os.system('python report.py --config report.ini')
+os.system('python /opt/app-root/src/report.py --config /opt/app-root/src/report.ini')
